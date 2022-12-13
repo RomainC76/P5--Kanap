@@ -12,7 +12,7 @@ const start = () => {
         fetch ("http://localhost:3000/api/products")
           .then(res=>res.json())
           .then(data=> {  
-                // la variable display est la a cause de la portée des variables         
+                // la variable display est la a cause de la portée des variables + simple de faire un "template"  que de tout créer a l'ancienne      
                 let display = ''
                 for (let article of data){
                   // Le += premet d'insérer l'html sans ecraser le reste(concatenation à la volée, il se rempli au fur et a mesure)
@@ -26,12 +26,12 @@ const start = () => {
                         </article>
                       </a>
                   `
-                  console.log(display)
                 }
                 document.querySelector('#items').insertAdjacentHTML('beforeend', display)
           })  
           .catch(err=> console.log(err))
-}        
+}  
+
 window.addEventListener('load', start)        
        
 
