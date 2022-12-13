@@ -1,53 +1,40 @@
-// recuperation de l'api et stockage dans LocalStorage
+/**
+ * 1 recuperer les articles
+ * 2 construire l'html
+ * 3 injecter l'html dans le dom
+ *    3.1pointer sur lelement item
+ *    3.2injecter dans le dom
+ */
 
-function fetchApi() {fetch("http://localhost:3000/api/products")
-    .then((res) => res.json())
-    .then((data) => localStorage.setItem("productData", JSON.stringify(data)))
-}
+// recuperation de l'api et modification du dom
+const start = () => {
 
-// ajout du du product data en tant que JSON car local storage ne lit que les chaines
-
-const kanapData = JSON.parse(localStorage.getItem("productData"));
-
-// Test cours opc
-
-// Récuprération de l'api et stockage en localstorage
-
-// function fetchApi() {fetch("http://localhost:3000/api/products")
-//   .then(function(res) {
-//     if (res.ok) {
-//       return res.json()
-//     .then ((data) => localStorage.setItem("productData",JSON.stringify(data)));
-//     }
-
-// ajout du du product data en tant que JSON car local storage ne lit que les chaines
-
-// const KanapData = JSON.parse(localStorage.getItem("productData"));     
-
-// **Ajouts des items sur la page index
-
-// Creer une fonction en appelant l'id puis restitue les chose contenu dedans
-// Appeler dabord l id du canap
-
-
-//   .then(function(value) {
-//     document
-//         .getElementById("hello-result")
-//         .innerText = value.queryString.greetings;
-//   })
-//   .catch(function(err) {
-//     // Une erreur est survenue
-//   });
-// }**
+        fetch ("http://localhost:3000/api/products")
+          .then(res=>res.json())
+          .then(data=> {  
+                // la variable display est la a cause de la portée des variables         
+                let display = ''
+                for (let article of data){
+                  // Le += premet d'insérer l'html sans ecraser le reste(concatenation à la volée, il se rempli au fur et a mesure)
+                  //creer un template est bcp plus rapide que de creer avec appenchild ect
+                  display += `  
+                    <a href="./product.html?id=${article._id}">
+                        <article>
+                          <img src="${article.imageUrl}" alt="${article.altTxt}">
+                          <h3 class="productName">${article.name}</h3>
+                          <p class="productDescription">${article.description}</p>
+                        </article>
+                      </a>
+                  `
+                  console.log(display)
+                }
+                document.querySelector('#items').insertAdjacentHTML('beforeend', display)
+          })  
+          .catch(err=> console.log(err))
+}        
+window.addEventListener('load', start)        
+       
 
 
 
-// Ajout des canapes 
 
-{/* <a href="107fb5b75607497b96722bda5b504926">
-            <article>
-              <img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">
-              <h3 class="productName">Kanap name1</h3>
-              <p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada risus sapien gravida nulla nisl arcu.</p>
-            </article>
-          </a> */}
