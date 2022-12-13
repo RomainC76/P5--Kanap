@@ -6,15 +6,17 @@
  *    3.2injecter dans le dom
  */
 
-// recuperation de l'api et modification du dom
+// recuperation de l'api et modification du dom(une fois chargé)
+
 const start = () => {
 
         fetch ("http://localhost:3000/api/products")
           .then(res=>res.json())
-          .then(data=> {  
+          .then(data=> {  localStorage.setItem("productData", JSON.stringify(data));
+      const kanapData = JSON.parse(localStorage.getItem("productData"));
                 // la variable display est la a cause de la portée des variables + simple de faire un "template"  que de tout créer a l'ancienne      
                 let display = ''
-                for (let article of data){
+                for (let article of kanapData){
                   // Le += premet d'insérer l'html sans ecraser le reste(concatenation à la volée, il se rempli au fur et a mesure)
                   //creer un template est bcp plus rapide que de creer avec appenchild ect
                   display += `  
@@ -27,7 +29,7 @@ const start = () => {
                       </a>
                   `
                 }
-                document.querySelector('#items').insertAdjacentHTML('beforeend', display)
+                document.getElementById('items').insertAdjacentHTML('beforeend', display)
           })  
           .catch(err=> console.log(err))
 }  
