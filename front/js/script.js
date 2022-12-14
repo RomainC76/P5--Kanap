@@ -12,8 +12,8 @@ const start = () => {
 
         fetch ("http://localhost:3000/api/products")
           .then(res=>res.json())
-          .then(data=> {  localStorage.setItem("productData", JSON.stringify(data));
-      const kanapData = JSON.parse(localStorage.getItem("productData"));
+          .then(kanapData=> {  //localStorage.setItem("productData", JSON.stringify(data));
+      // const kanapData = JSON.parse(localStorage.getItem("productData"));
                 // la variable display est la a cause de la portée des variables + simple de faire un "template"  que de tout créer a l'ancienne      
                 let display = ''
                 for (let article of kanapData){
