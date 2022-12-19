@@ -42,3 +42,70 @@ const affichagePageCanape = (id) => {
 
 // PANIER
 
+//ajout canape au panier
+let boutonAjoutPanier = document.getElementById("addToCart");
+
+boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se lance au clic
+  ///recuperation quantité
+  const quantite = document.getElementById("quantity").value;
+  ////recuperation couleur   
+  const couleurChoisie = document.getElementById("colors").value;
+  ////recuperation idproduit   
+  const idProduit = idCanap;
+  let select = document.getElementById("selectElement");
+  let Panier = [];
+  let canapChoisi = {
+    id: idCanap,
+    quantite: quantite,
+    couleur: couleurChoisie
+  };
+  //si pas de couleur ou de quantite choisie
+  if (couleurChoisie == "" || quantite <= 0 || quantite > 100) {
+    //demander à l'utilisateur de faire une sélection
+    alert("Veuillez choisir une couleur et une quantité")
+
+  } else { //si l'utilisateur a fait son choix
+    // recuperation du contenu du panier
+
+    let panierActuel = localStorage.getItem("Panier");
+
+    // si panier vide
+
+    if (panierActuel === null) {
+
+      //ajout du produit sélectionné
+
+      panierActuel = [];
+      panierActuel.push(canapChoisi);
+      let panierLocalStorage = JSON.stringify(panierActuel);
+      console.table(panierLocalStorage);
+      localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+      alert("Vous avez commandé un autre canapé")
+    } else { //si panier contient déjà un canap
+
+      const Panier = JSON.parse(panierActuel);
+      console.table(Panier);
+      idem = false;
+
+      //on parcourt le panier
+
+      Panier.forEach((canap) => {
+        if (canap.id === idCanap && canap.couleur === couleurChoisie) { //si canap présente même ID + même couleur
+          canap.quantite = parseInt(quantite) + parseInt(canap.quantite);//nouvelle quantité du même produit
+          idem = true;
+        }
+      })
+
+      if (idem === false) {
+        Panier.push(canapChoisi);
+
+      }
+
+      let panierLocalStorage = JSON.stringify(Panier);
+      localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+
+    }
+  }
+
+
+});
