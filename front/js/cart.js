@@ -47,4 +47,102 @@ function affichageElement(article, infoJsonArticle) {
     createArticle.setAttribute('data-id', article.id);
     createArticle.setAttribute('data-color', article.couleur);
     carteArticle.appendChild(createArticle);
+
+    // insertion des IMG
+    let createIMG = document.createElement('div');
+    createIMG.className = 'cart__item__img';
+    createArticle.appendChild(createIMG);
+    let createAttributImg = document.createElement('img');
+    createAttributImg.setAttribute('src', infoJson.imageUrl);
+    createAttributImg.setAttribute('alt', infoJson.altTxt);
+    createIMG.appendChild(createAttributImg);
+
+    // insertion item content
+    let createItemContent = document.createElement('div');
+    createItemContent.className = 'cart__item__content';
+    createArticle.appendChild(createItemContent);
+
+    // insertion div description
+    let createDivDes = document.createElement('div');
+    createDivDes.className = 'cart__item__content__description';
+    createItemContent.appendChild(createDivDes);
+
+    // insertion H2
+    let createH2 = document.createElement('h2');
+    createH2.textContent = infoJsonArticle.name;
+    createDivDes.appendChild(createH2);
+
+    // insertion P couleur
+    let createCouleur = document.createElement('p');
+    createCouleur.textContent = article.couleur;
+    createDivDes.appendChild(createCouleur);
+
+    // insertion P prix
+    let createPrix = document.createElement('p');
+    createPrix.textContent = infoJson.price + "€";
+    createDivDes.appendChild(createPrix);
+
+    // insertion des options.
+    let divOptions = document.createElement("div");
+    divOptions.classList.add("cart__item__content__settings");
+    createItemContent.appendChild(divOptions);
+    // Insertions options quantité.
+    let divQuantite = document.createElement("div");
+    divQuantite.classList.add("cart__item__content__settings__quantity");
+    divOptions.appendChild(divQuantite);
+    let canapQte = document.createElement("p");
+    canapQte.textContent = "Qté : " + article.quantite;
+    divQuantite.appendChild(canapQte);
+
+    // Creation de l'input quantité.
+    let inputQuantite = document.createElement("input");
+    inputQuantite.classList.add("itemQuantity");
+    inputQuantite.type = "number";
+    inputQuantite.name = "itemQuantity";
+    inputQuantite.setAttribute("min", "1");
+    inputQuantite.setAttribute("max", "100");
+    inputQuantite.setAttribute("value", article.quantite);
+    // Insertion des elements dans les options de quantité.
+    divQuantite.append(canapQte, inputQuantite);
+
+    // Creation du contenu des options de suppression.
+    let optionSupr = document.createElement("div");
+    optionSupr.classList.add("cart__item__content__settings__delete");
+    divQuantite.appendChild(optionSupr);
+
+    // Creation du paragraphe de suppression.
+    let pSupr = document.createElement("p");
+    pSupr.classList.add("deleteItem");
+    pSupr.textContent = "Supprimer";
+    optionSupr.appendChild(pSupr);
+
+    modifQte(inputQuantite, article);
+    supprCanap(pSupr, article);
+}
+
+function modifQte(input, article) {
+    input.onchange = (e) => {
+        let nvlleQte = e.target.value;
+        console.log(nvlleQte, article);
+        article.quantite = nvlleQte;
+        e.target.previousElementSibling.textContent = 'Qté : ' + article.quantite;
+        console.log(Panier);
+        let panierLocalStorage = JSON.stringify(Panier);
+        localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+        window.location.reload();
+    }
+}
+
+function supprCanap(button, article) {
+
+    button.onclick = (e) => {
+        //filtre les éléments qui n'ont pas l'identifiant de l'article sélectionné
+        Panier = Panier.filter(element => element.id != article.id)
+        //stockage du Panier à nouveau
+        let panierLocalStorage = JSON.stringify(Panier);
+        localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
+        alert('Votre article a bien été supprimé.');
+        window.location.reload();
+
+    }
 }

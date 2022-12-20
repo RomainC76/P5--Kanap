@@ -80,7 +80,7 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
       let panierLocalStorage = JSON.stringify(panierActuel);
       console.table(panierLocalStorage);
       localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
-      alert("Vous avez commandé un autre canapé")
+      alert("Vous avez commandé un canapé")
     } else { //si panier contient déjà un canap
 
       const Panier = JSON.parse(panierActuel);
@@ -92,6 +92,8 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
       Panier.forEach((canap) => {
         if (canap.id === idCanap && canap.couleur === couleurChoisie) { //si canap présente même ID + même couleur
           canap.quantite = parseInt(quantite) + parseInt(canap.quantite);//nouvelle quantité du même produit
+          alert("Vous avez commandé un canapé")
+
           idem = true;
         }
       })
