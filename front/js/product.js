@@ -58,7 +58,7 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
   //si pas de couleur ou de quantite choisie
   if (couleurChoisie == "" || quantite <= 0 || quantite > 100) {
     //demander à l'utilisateur de faire une sélection
-    alert("Veuillez choisir une couleur et une quantité")
+    alert("Veuillez choisir une couleur et une quantité entre 1 et 100")
 
   } else { //si l'utilisateur a fait son choix
     // recuperation du contenu du panier
