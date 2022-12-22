@@ -17,29 +17,25 @@ function affichageDonnees() {
 affichageDonnees();
 
 // construction la fiche du canape
-const affichagePageCanape = (id) => {
-  //remplacement du titre de la page
-  let title = document.querySelector("title")
-  title.innerText = `${id.name}`;
+const affichagePageCanape = (idProduit) => {
   //image produit
   let img = document.querySelector(".item__img");
-  img.innerHTML = `<img src="${id.imageUrl}" alt="${id.altTxt}"></img>`;
+  img.innerHTML = `<img src="${idProduit.imageUrl}" alt="${idProduit.altTxt}"></img>`;
   //Nom du produit
   let titre = document.getElementById("title");
-  titre.innerHTML = `${id.name}`;
+  titre.innerHTML = `${idProduit.name}`;
   //Prix
   let prix = document.getElementById("price");
-  prix.innerHTML = `${id.price}`;
+  prix.innerHTML = `${idProduit.price}`;
   //Description
   let description = document.getElementById("description");
-  description.innerHTML = `${id.description}`;
+  description.innerHTML = `${idProduit.description}`;
   // Couleurs
   let couleur = document.getElementById("colors");
-  for (let i of id.colors) {
+  for (let i of idProduit.colors) {
     couleur.innerHTML += `<option value="${i}">${i}</option>`;
   }
 }
-
 // PANIER
 
 //ajout canape au panier
@@ -53,7 +49,7 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
   ////recuperation idproduit   
   const idProduit = idCanap;
   let select = document.getElementById("selectElement");
-  let Panier = [];
+  //Creation de l'objet canapé choisi
   let canapChoisi = {
     id: idCanap,
     quantite: quantite,
@@ -77,14 +73,13 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
 
       panierActuel = [];
       panierActuel.push(canapChoisi);
+      //stockage du canapé dans le local storage
       let panierLocalStorage = JSON.stringify(panierActuel);
-      console.table(panierLocalStorage);
       localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
       alert("Vous avez commandé un canapé")
     } else { //si panier contient déjà un canap
 
       const Panier = JSON.parse(panierActuel);
-      console.table(Panier);
       idem = false;
 
       //on parcourt le panier
@@ -102,7 +97,7 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
         Panier.push(canapChoisi);
 
       }
-
+      //stochage panier dans localstorage
       let panierLocalStorage = JSON.stringify(Panier);
       localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
 

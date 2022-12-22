@@ -151,67 +151,123 @@ function supprCanap(button, article) {
 
 //PASSER LA COMMANDE - VALIDATION FORMULAIRE
 
-//REGEX 
-let firstName = document.getElementById('firstName')
-let lastName = document.getElementById('lastName')
-let address = document.getElementById('address')
-let city = document.getElementById('city')
-let email = document.getElementById('email')
-let bouton = document.getElementById('order')
+///REGEX
+let RegexAdress = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
+let RegexNom = new RegExp("^[a-zA-Z ,.'-]+$");
+let RegexMail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
+let RegexCity = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
+///CHAMPS FORMULAIRE
+let email = document.getElementById("email");
+let emailErrorMsg = document.querySelector('#emailErrorMsg');
+let prenom = document.getElementById("firstName");
+let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+let nom = document.getElementById("lastName");
+let lastnameErrorMsg = document.querySelector('#lastnameErrorMsg');
+let ville = document.getElementById("city");
+let cityErrorMsg = document.querySelector('#cityErrorMsg');
+let address = document.getElementById("address");
+let addressErrorMsg = document.querySelector('#addressErrorMsg');
+let commandErrorMsg = document.querySelector('#commandErrorMsg');
 
-// verification des infos client
-bouton.addEventListener('click', regCheck)
 
-// regEx verification
-function regCheck(click) {
-    if ((/^(?=.{2,20}$)[a-zA-Z]+(?:[-'\s][a-zA-Z]+)*$/).test(firstName.value) === false) {
-        click.preventDefault()
-        msgError('firstNameErrorMsg');
-        return
+////Messages pour informer l'utilisateur de la validité des champs
+//PRENOM
+prenom.onchange = (e) => {
+    if (RegexNom.test(prenom.value)) {
+        firstNameErrorMsg.innerHTML = 'Valide';
+        let validPrenom = RegexNom.test(prenom.value);
+    } else {
+        firstNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre prenom.';
     }
-    else msgOk('firstNameErrorMsg');
-    if ((/^(?=.{2,20}$)[a-zA-Z]+(?:[-'\s][a-zA-Z]+)*$/g).test(lastName.value) === false) {
-        click.preventDefault()
-        msgError('lastNameErrorMsg');
-        return
+};
+
+//NOM
+nom.onchange = (e) => {
+    if (RegexNom.test(nom.value)) {
+        lastNameErrorMsg.innerHTML = 'Valide';
+    } else {
+        lastNameErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre nom.';
     }
-    else msgOk('lastNameErrorMsg');
-    if ((/^(?=.{2,40}$)(?:\w+[_+-.,!@#$%^&*();/|<>"]\w+)*$/).test(address.value) === true) {
-        click.preventDefault()
-        msgError('addressErrorMsg');
-        return
+};
+
+//ADRESSE
+address.onchange = (e) => {
+    if (RegexAdress.test(address.value)) {
+        addressErrorMsg.innerHTML = 'Valide';
+    } else {
+        addressErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre adresse.';
     }
-    else msgOk('addressErrorMsg');
-    if ((/^(?=.{2,20}$)[a-zA-Z]+(?:[-'\s][a-zA-Z]+)*$/).test(city.value) === false) {
-        click.preventDefault()
-        msgError('cityErrorMsg');
-        return
+};
+
+//VILLE
+ville.onchange = (e) => {
+    if (RegexCity.test(ville.value)) {
+        cityErrorMsg.innerHTML = 'Valide';
+    } else {
+        cityErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier la ville entrée.';
     }
-    else msgOk('cityErrorMsg');
-    if ((/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?=.{2,6}$)(?:\w+[.][a-zA-Z]+)*$/).test(email.value) === false || email.value === "") {
-        click.preventDefault()
-        msgError('emailErrorMsg');
-        return
+};
+
+//EMAIL
+email.onchange = (e) => {
+    if (RegexMail.test(email.value)) {
+        emailErrorMsg.innerHTML = 'Valide';
+    } else {
+        emailErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier votre adresse email.';
     }
-    else {
-        click.preventDefault()
-        msgOk('emailErrorMsg')
-    };
-    let isComplete = confirm("Voulez vous valider votre panier ?");
-    if (isComplete === true) {
-        click.preventDefault();
-        panierFinal();
-    } else
-        click.preventDefault();
+};
+
+//ENVOI COMMANDE
+let buttonCommande = document.querySelector('#order');
+
+buttonCommande.onclick = (e) => {
+    e.preventDefault();
+    if (RegexNom.test(prenom.value) && RegexNom.test(nom.value) && RegexNom.test(ville.value) && RegexAdress.test(address.value) && RegexMail.test(email.value)) {
+
+        //Creation d'un tableau de produits envoyé au back-end- array de strings product-ID
+        let productID = [];
+        Panier.forEach((product) => {
+            productID.push(product.id);
+        });
+
+        //Creation d'un objet avec les produits et les informations de contact
+        let commande = {
+            contact: {
+                firstName: prenom.value,
+                lastName: nom.value,
+                address: address.value,
+                city: ville.value,
+                email: email.value
+            },
+            products: productID,
+        }
+
+        // Stockage de la commande en localstorage et envoi à l'API
+        fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(commande),
+        })
+            .then(response => response.json())
+            .then(result => {
+                document.location.href = `confirmation.html?orderId=${result.orderId}`;
+            })
+            .catch(function (err) {
+                alert("erreur");
+            });
+        let isComplete = confirm("Voulez vous valider votre panier ?");
+        if (isComplete === true) {
+            click.preventDefault();
+            panierFinal();
+        } else
+            click.preventDefault();
+
+
+    } else {
+        commandErrorMsg.innerHTML = 'Veuillez vérifier vos données';
+    }
+
 }
-
-// message d'erreur en fonction de l'emplacement de la saisie
-function msgError(location) {
-    document.getElementById(location).innerText = "Verifier votre saisie"
-}
-
-// message ok en fonction de l'emplacement de la saisie
-function msgOk(location) {
-    document.getElementById(location).innerText = ""
-}
-
