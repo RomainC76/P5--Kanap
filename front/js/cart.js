@@ -132,7 +132,6 @@ function modifQte(input, article) {
         let panierLocalStorage = JSON.stringify(Panier);
         localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
         window.location.reload();
-        return
     }
 }
 
