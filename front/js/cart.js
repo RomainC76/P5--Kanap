@@ -1,3 +1,4 @@
+
 // recuperation du contenu du panier
 let panierActuel = localStorage.getItem("Panier");
 let Panier = JSON.parse(panierActuel);
@@ -217,6 +218,7 @@ email.onchange = (e) => {
 };
 
 //ENVOI COMMANDE
+
 let buttonCommande = document.querySelector('#order');
 
 buttonCommande.onclick = (e) => {
@@ -264,3 +266,4 @@ buttonCommande.onclick = (e) => {
     }
 
 }
+
