@@ -148,14 +148,13 @@ function supprCanap(button, article) {
 
     }
 }
-
 //PASSER LA COMMANDE - VALIDATION FORMULAIRE
 
 ///REGEX
 let RegexAdress = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
 let RegexNom = new RegExp("^[a-zA-Z ,.'-]+$");
 let RegexMail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
-let RegexCity = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
+
 ///CHAMPS FORMULAIRE
 let email = document.getElementById("email");
 let emailErrorMsg = document.querySelector('#emailErrorMsg');
@@ -201,7 +200,7 @@ address.onchange = (e) => {
 
 //VILLE
 ville.onchange = (e) => {
-    if (RegexCity.test(ville.value)) {
+    if (RegexNom.test(ville.value)) {
         cityErrorMsg.innerHTML = 'Valide';
     } else {
         cityErrorMsg.innerHTML = 'Champ invalide, veuillez vérifier la ville entrée.';
@@ -258,12 +257,6 @@ buttonCommande.onclick = (e) => {
             .catch(function (err) {
                 alert("erreur");
             });
-        let isComplete = confirm("Voulez vous valider votre panier ?");
-        if (isComplete === true) {
-            click.preventDefault();
-            panierFinal();
-        } else
-            click.preventDefault();
 
 
     } else {
