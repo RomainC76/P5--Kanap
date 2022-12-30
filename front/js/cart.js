@@ -15,11 +15,12 @@ let sumQuantite = 0;
 let sumPrix = 0;
 
 //PANIER VIDE
-if (Panier == null) {
 
+if (Panier == null) {
     titre.innerHTML = `Votre panier est vide`;
 
-} else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
+}
+else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
 
     Panier.forEach((element) => {
         const urlCanap = `http://localhost:3000/api/products/${element.id}`;
