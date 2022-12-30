@@ -112,7 +112,7 @@ function affichageElement(article, infoJsonArticle) {
     // Creation du contenu des options de suppression.
     let optionSupr = document.createElement("div");
     optionSupr.classList.add("cart__item__content__settings__delete");
-    divQuantite.appendChild(optionSupr);
+    createItemContent.appendChild(optionSupr);
 
     // Creation du paragraphe de suppression.
     let pSupr = document.createElement("p");
