@@ -1,4 +1,3 @@
-
 // recuperation du contenu du panier
 let panierActuel = localStorage.getItem("Panier");
 let Panier = JSON.parse(panierActuel);
@@ -9,18 +8,14 @@ let titre = document.querySelector("h1");
 let affichageTotalQuantite = document.getElementById("totalQuantity");
 let affichagePrixTotal = document.getElementById("totalPrice");
 
-
 // initialisation pour les Totaux
 let sumQuantite = 0;
 let sumPrix = 0;
 
 //PANIER VIDE
-
 if (Panier == null) {
     titre.innerHTML = `Votre panier est vide`;
-
-}
-else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
+} else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
 
     Panier.forEach((element) => {
         const urlCanap = `http://localhost:3000/api/products/${element.id}`;
@@ -38,13 +33,10 @@ else {  ////PANIER NON VIDE - AFFICHAGE ELEMENTS CANAPES SELECTIONNES -
                 affichageTotalQuantite.innerHTML = sumQuantite;
                 affichagePrixTotal.innerHTML = sumPrix;
             });
-
     })
-
 }
 
 function affichageElement(article, infoJsonArticle) {
-
     // insertion des articles
     let createArticle = document.createElement('article');
     createArticle.className = 'cart__item';
@@ -90,6 +82,7 @@ function affichageElement(article, infoJsonArticle) {
     let divOptions = document.createElement("div");
     divOptions.classList.add("cart__item__content__settings");
     createItemContent.appendChild(divOptions);
+
     // Insertions options quantité.
     let divQuantite = document.createElement("div");
     divQuantite.classList.add("cart__item__content__settings__quantity");
@@ -106,13 +99,14 @@ function affichageElement(article, infoJsonArticle) {
     inputQuantite.setAttribute("min", "1");
     inputQuantite.setAttribute("max", "100");
     inputQuantite.setAttribute("value", article.quantite);
+
     // Insertion des elements dans les options de quantité.
     divQuantite.append(canapQte, inputQuantite);
 
     // Creation du contenu des options de suppression.
     let optionSupr = document.createElement("div");
     optionSupr.classList.add("cart__item__content__settings__delete");
-    createItemContent.appendChild(optionSupr);
+    divQuantite.appendChild(optionSupr);
 
     // Creation du paragraphe de suppression.
     let pSupr = document.createElement("p");
@@ -150,6 +144,7 @@ function supprCanap(button, article) {
 
     }
 }
+
 //PASSER LA COMMANDE - VALIDATION FORMULAIRE
 
 ///REGEX
@@ -223,7 +218,7 @@ email.onchange = (e) => {
 let buttonCommande = document.querySelector('#order');
 
 buttonCommande.onclick = (e) => {
-    e.preventDefault();
+
     if (RegexNom.test(prenom.value) && RegexNom.test(nom.value) && RegexNom.test(ville.value) && RegexAdress.test(address.value) && RegexMail.test(email.value)) {
 
         //Creation d'un tableau de produits envoyé au back-end- array de strings product-ID
