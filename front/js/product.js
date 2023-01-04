@@ -88,14 +88,20 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
       //on parcourt le panier
 
       Panier.forEach((canap) => {
+
         if (canap.id === idCanap && canap.couleur === couleurChoisie) { //si canap présente même ID + même couleur
           canap.quantite = parseInt(quantite) + parseInt(canap.quantite);//nouvelle quantité du même produit
           alert("Vous avez commandé un canapé")
 
           idem = true;
         }
+        if (canap.quantite > 100) {
+          console.log("Maximum 100 canapé par commande")
+          this.innerHTML = 'Maximum 100 canapé de même couleur par commande';
+          canap.quantite = parseInt(quantite);
+          window.location.reload();
+        }
       })
-
       if (idem === false) {
         Panier.push(canapChoisi);
 
