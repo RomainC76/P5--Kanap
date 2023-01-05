@@ -97,9 +97,7 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
         }
         if (canap.quantite > 100) {
           console.log("Maximum 100 canapé par commande")
-          this.innerHTML = 'Maximum 100 canapé de même couleur par commande';
           canap.quantite = parseInt(quantite);
-          window.location.reload();
         }
       })
       if (idem === false) {
