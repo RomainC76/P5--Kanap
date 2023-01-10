@@ -96,13 +96,14 @@ boutonAjoutPanier.addEventListener('click', function (event) {//fonction qui se 
           idem = true;
         }
         if (canap.quantite > 100) {
-          console.log("Maximum 100 canapé par commande")
           canap.quantite = parseInt(quantite);
+          alert("Maximum 100 canapé par commande,remise à zéro");
+          localStorage.clear
+          window.location.reload();
         }
       })
       if (idem === false) {
         Panier.push(canapChoisi);
-
       }
       //stochage panier dans localstorage
       let panierLocalStorage = JSON.stringify(Panier);
