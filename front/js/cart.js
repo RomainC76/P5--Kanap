@@ -135,7 +135,7 @@ function supprCanap(button, article) {
 
     button.onclick = (e) => {
         //filtre les éléments qui n'ont pas l'identifiant de l'article sélectionné
-        Panier = Panier.filter(element => element.id != article.id)
+        Panier = Panier.filter(element => element.id != article.id || element.couleur != article.couleur)
         //stockage du Panier à nouveau
         let panierLocalStorage = JSON.stringify(Panier);
         localStorage.setItem("Panier", panierLocalStorage); //panier stocké 
